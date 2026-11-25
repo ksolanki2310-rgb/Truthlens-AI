@@ -1,0 +1,660 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobShield AI Dashboard</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #0b1120;
+    color: #e2e8f0;
+}
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 245px;
+    background: #111a2e;
+    padding: 28px 18px;
+    border-right: 1px solid #24314a;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 45px;
+    padding-left: 12px;
+}
+
+.logo span {
+    color: #8b5cf6;
+}
+
+.menu-title {
+    color: #64748b;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin: 25px 12px 12px;
+}
+
+.nav-item {
+    display: block;
+    color: #94a3b8;
+    padding: 14px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background: #26345a;
+    color: #a78bfa;
+}
+
+/* Main */
+.main {
+    flex: 1;
+    padding: 30px;
+    min-width: 0;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    gap: 15px;
+}
+
+.topbar h2 {
+    font-size: 25px;
+}
+
+.topbar p {
+    color: #94a3b8;
+    margin-top: 6px;
+}
+
+.status {
+    background: #12352f;
+    color: #4ade80;
+    padding: 10px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+}
+
+/* Hero */
+.hero {
+    padding: 30px;
+    border-radius: 18px;
+    background: linear-gradient(110deg, #4338ca, #7c3aed, #2563eb);
+    margin-bottom: 28px;
+}
+
+.hero h1 {
+    font-size: 29px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #e0e7ff;
+    line-height: 1.6;
+}
+
+/* Stats */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: #151f33;
+    border: 1px solid #283650;
+    border-radius: 14px;
+    padding: 23px;
+}
+
+.stat-card p {
+    color: #94a3b8;
+    margin-bottom: 15px;
+}
+
+.stat-card h2 {
+    font-size: 32px;
+}
+
+.stat-icon {
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+.purple { color: #a78bfa; }
+.green { color: #4ade80; }
+.red { color: #fb7185; }
+
+/* Content */
+.content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 22px;
+}
+
+.card {
+    background: #151f33;
+    border: 1px solid #283650;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.card h3 {
+    margin-bottom: 22px;
+    font-size: 19px;
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 17px;
+}
+
+label {
+    display: block;
+    color: #cbd5e1;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    background: #0b1120;
+    border: 1px solid #34445e;
+    border-radius: 8px;
+    color: white;
+    outline: none;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #8b5cf6;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 75px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.checks {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.checks label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.checks input {
+    width: auto;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(90deg, #7c3aed, #4f46e5);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* Result */
+.result {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.safe {
+    background: #12352f;
+    border: 1px solid #22c55e;
+}
+
+.danger {
+    background: #451d2b;
+    border: 1px solid #fb7185;
+}
+
+.error {
+    background: #493719;
+    border: 1px solid #facc15;
+}
+
+.result h2 {
+    margin-bottom: 10px;
+}
+
+.probability {
+    font-size: 27px;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+/* Recent Activity */
+.activity {
+    padding: 16px 0;
+    border-bottom: 1px solid #29364c;
+}
+
+.activity:last-child {
+    border: none;
+}
+
+.activity p {
+    margin-bottom: 7px;
+}
+
+.activity small {
+    color: #94a3b8;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: #64748b;
+    padding: 30px 0 10px;
+    font-size: 13px;
+}
+
+@media(max-width: 1000px) {
+    .content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 700px) {
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        padding: 18px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .row {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+
+    <div class="logo">🛡️ Job<span>Shield</span></div>
+
+    <p class="menu-title">MENU</p>
+
+    <a href="/" class="nav-item active">▦ Dashboard</a>
+    <a href="#analyzer" class="nav-item">🔍 Job Analyzer</a>
+    <a href="#activity" class="nav-item">📊 Activity</a>
+
+    <p class="menu-title">SYSTEM</p>
+
+    <a href="/docs" class="nav-item">⚙ API Documentation</a>
+
+</aside>
+
+<!-- Main -->
+<main class="main">
+
+    <div class="topbar">
+        <div>
+            <h2>Dashboard Overview</h2>
+            <p>Welcome to your AI-powered job security system.</p>
+        </div>
+
+        <div class="status">● AI System Active</div>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Welcome to JobShield AI 🚀</h1>
+        <p>
+            Detect fraudulent job postings using Machine Learning.
+            Analyze job details and identify suspicious opportunities.
+        </p>
+    </section>
+
+    <!-- Statistics -->
+    <section class="stats">
+
+        <div class="stat-card">
+            <div class="stat-icon purple">📋</div>
+            <p>Total Jobs Checked</p>
+            <h2 id="total">0</h2>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon red">⚠️</div>
+            <p>Fake Jobs Detected</p>
+            <h2 id="fake">0</h2>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon green">✓</div>
+            <p>Genuine Jobs</p>
+            <h2 id="genuine">0</h2>
+        </div>
+
+    </section>
+
+    <!-- Main Content -->
+    <section class="content">
+
+        <!-- Job Analyzer -->
+        <div class="card" id="analyzer">
+
+            <h3>🔍 Job Authenticity Analyzer</h3>
+
+            <form id="jobForm">
+
+                <div class="form-group">
+                    <label>Job Title *</label>
+                    <input id="title" required
+                    placeholder="e.g. Data Scientist">
+                </div>
+
+                <div class="form-group">
+                    <label>Company Profile</label>
+                    <textarea id="company_profile"
+                    placeholder="Enter company information"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Job Description *</label>
+                    <textarea id="description" required
+                    placeholder="Enter job description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Requirements</label>
+                    <textarea id="requirements"
+                    placeholder="Enter job requirements"></textarea>
+                </div>
+
+                <div class="row">
+
+                    <div class="form-group">
+                        <label>Employment Type</label>
+                        <select id="employment_type">
+                            <option>Unknown</option>
+                            <option>Full-time</option>
+                            <option>Part-time</option>
+                            <option>Contract</option>
+                            <option>Temporary</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Experience</label>
+                        <select id="required_experience">
+                            <option>Unknown</option>
+                            <option>Internship</option>
+                            <option>Entry level</option>
+                            <option>Associate</option>
+                            <option>Mid-Senior level</option>
+                            <option>Director</option>
+                            <option>Executive</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Required Education</label>
+                    <select id="required_education">
+                        <option>Unknown</option>
+                        <option>High School or equivalent</option>
+                        <option>Associate Degree</option>
+                        <option>Bachelor's Degree</option>
+                        <option>Master's Degree</option>
+                        <option>Doctorate</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Additional Information</label>
+
+                    <div class="checks">
+                        <label>
+                            <input type="checkbox" id="telecommuting">
+                            Remote
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="has_company_logo">
+                            Company Logo
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="has_questions">
+                            Questions
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn">
+                    🔍 Analyze Job Posting
+                </button>
+
+            </form>
+
+            <div class="result" id="result">
+                <h2 id="resultTitle"></h2>
+                <p id="resultMessage"></p>
+                <div class="probability" id="probability"></div>
+                <small>Model prediction score</small>
+            </div>
+
+        </div>
+
+        <!-- Activity -->
+        <div class="card" id="activity">
+
+            <h3>📈 Recent Analysis</h3>
+
+            <div id="activityList">
+                <div class="activity">
+                    <p>No analysis performed yet.</p>
+                    <small>Results will appear here.</small>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer>
+        © 2026 JobShield AI | Fake Job Detection System
+        <br><br>
+        Powered by Machine Learning
+    </footer>
+
+</main>
+</div>
+
+<script>
+
+let total = 0;
+let fake = 0;
+let genuine = 0;
+
+const form = document.getElementById("jobForm");
+const result = document.getElementById("result");
+const button = document.getElementById("submitBtn");
+
+form.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    button.disabled = true;
+    button.innerText = "⏳ Analyzing...";
+
+    result.style.display = "none";
+
+    const jobData = {
+        title: document.getElementById("title").value,
+        company_profile: document.getElementById("company_profile").value,
+        description: document.getElementById("description").value,
+        requirements: document.getElementById("requirements").value,
+
+        employment_type: document.getElementById("employment_type").value,
+        required_experience: document.getElementById("required_experience").value,
+        required_education: document.getElementById("required_education").value,
+
+        telecommuting: Number(document.getElementById("telecommuting").checked),
+        has_company_logo: Number(document.getElementById("has_company_logo").checked),
+        has_questions: Number(document.getElementById("has_questions").checked)
+    };
+
+    try {
+
+        const response = await fetch("/predict", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(jobData)
+        });
+
+        if (!response.ok) {
+            throw new Error("API Error: " + response.status);
+        }
+
+        const data = await response.json();
+
+        total++;
+
+        if (data.fraudulent === 1) {
+            fake++;
+        } else {
+            genuine++;
+        }
+
+        document.getElementById("total").innerText = total;
+        document.getElementById("fake").innerText = fake;
+        document.getElementById("genuine").innerText = genuine;
+
+        result.style.display = "block";
+
+        if (data.fraudulent === 1) {
+
+            result.className = "result danger";
+            document.getElementById("resultTitle").innerText =
+                "⚠️ Fake Job Detected";
+
+        } else {
+
+            result.className = "result safe";
+            document.getElementById("resultTitle").innerText =
+                "✅ Genuine Job";
+
+        }
+
+        document.getElementById("resultMessage").innerText =
+            data.message;
+
+        document.getElementById("probability").innerText =
+            (data.probability * 100).toFixed(2) + "%";
+
+        const activity = document.getElementById("activityList");
+        const item = document.createElement("div");
+
+        item.className = "activity";
+
+        const title = document.createElement("p");
+        title.textContent = data.fraudulent === 1
+            ? "⚠️ " + jobData.title + " — Fake"
+            : "✅ " + jobData.title + " — Genuine";
+
+        const details = document.createElement("small");
+        details.textContent = "Fraud probability: " +
+            (data.probability * 100).toFixed(2) + "%";
+
+        item.append(title, details);
+        activity.prepend(item);
+
+    } catch(error) {
+
+        result.style.display = "block";
+        result.className = "result error";
+
+        document.getElementById("resultTitle").innerText =
+            "❌ Prediction Error";
+
+        document.getElementById("resultMessage").innerText =
+            error.message;
+
+    } finally {
+
+        button.disabled = false;
+        button.innerText = "🔍 Analyze Job Posting";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
